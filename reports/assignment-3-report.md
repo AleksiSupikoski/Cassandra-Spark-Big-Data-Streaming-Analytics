@@ -207,5 +207,5 @@ Data-output topic consumer, when data is sent at maximum possible interval (no d
 ... "latency":0.059,"throughput":2201.9166666666665}
 ```
   
-We see that throughput increases accordingly.´, this is because more data is processed in one minute window. We see that latency is 0.059 s, which is good and throughput at data second 5-second interval is 
+We see that throughput increases accordingly.´, this is because more data is processed in one minute window. We see that latency is 0.059 s, which is good and throughput at data second 5-second interval is 0.02 events (data jsons or rows processed) per second, which highly increases with 1 worker node processing 2200+ events per second, but it looks like some events are dropped.
   
