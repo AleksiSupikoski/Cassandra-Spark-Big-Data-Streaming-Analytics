@@ -218,4 +218,30 @@ We see that throughput increases accordingly.´, this is because more data is pr
   
 I presented how i generate wrong data in code above. When wrong data occurs, the tenantsreamapp reports about it to its warn topic, that it sends wrong data back so that tenant can see what is missing for example. This does not decrease performance (except decreasing throughput of correct data), nor cause errors it only produces dataframe with nulls which converts to emty output json or a json with missing data in the end. in 2.3 i also show what kind of message it generates to warn topic when data is wrong.
 
-### 2.5
+### 2.5 Explain parallelism settings in your implementation (tenantstreamapp) and test with different (higher) degrees of parallelism for at least two instances of tenantstreamapp (e.g., using different subsets of the same dataset). Report the performance and issues you have observed in your testing environments. Is there any siutation in which a high value of the application parallelism degree could cause performance problems, given your limited underlying computing resources
+  
+Since i am emulating data, by generating random data no other subset is required, only hawing two producers, and additional topics for the the tenants as well as an additional spark job. I tested with 1 worker node and with 3 worker nodes as with 3 worker nodes it was already hard for my machine to start a job. With unlimited resources i believe that at some point Amdahls law will have ts effect so that adding more nodes to the system will produce only minimal increase in performance. For 1 and 3 nodes i have seen an increase in performance of around 200 more events (rows) processed:
+
+1 worker node with maximum sending speed:
+```
+... "latency":0.059,"throughput":936.9666666666667}
+... "latency":0.059,"throughput":2239.6833333333334}
+... "latency":0.059,"throughput":2206.85}
+... "latency":0.059,"throughput":2201.9166666666665}
+... ...
+```
+
+3 worker nodes:
+```
+... "latency":0.059,"throughput":2365.1833333333334}
+... "latency":0.059,"throughput":2337.733333333333}
+... "latency":0.059,"throughput":2380.1}
+... "latency":0.059,"throughput":2362.5333333333333}
+... "latency":0.059,"throughput":2465.6833333333334}
+... "latency":0.059,"throughput":2502.65}
+... "latency":0.059,"throughput":2269.8166666666666}
+... latency":0.059,"throughput":2392.1833333333334}
+... "latency":0.059,"throughput":2358.8333333333335}
+... "latency":0.059,"throughput":2369.55}
+... ...
+```
