@@ -194,4 +194,6 @@ for i in range(100000):
 
 Warn topic consumer, where data is sent as alarm when environment is not ok, and wrong data is sent, note emty json { }:
 <p align="center"><img src="img/warn.png")<p>
-
+Data-output topic consumer, when data is sent at 5-second (as in real data) interval:
+<p align="center"><img src="img/warn.png")<p>
+Data-output topic consumer, when data is sent at maximum possible interval:
