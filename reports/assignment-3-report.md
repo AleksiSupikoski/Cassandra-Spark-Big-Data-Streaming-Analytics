@@ -191,3 +191,7 @@ for i in range(100000):
 
     #time.sleep(5) # turn off for extremely fast data speed.
 ```
+
+Warn topic consumer:
+<p align="center"><img src="img/warn.png")<p>
+
