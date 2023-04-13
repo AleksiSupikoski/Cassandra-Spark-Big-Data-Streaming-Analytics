@@ -84,7 +84,7 @@ df = df \
     .withColumn("value", from_json("value", schema)) \
     .select(col("value.*"))
 ```
-I then do the necessary processing for the dataframes and add new columns for the extracted data of interest, this data is then converted to json and sent to kafka using pyspark's methods.
+I then do the necessary processing for the dataframes and add new columns for the extracted data of interest, this data is then converted to json and sent to kafka using pyspark's methods. Since we have multiple types of analytics of interest, we also have two kafka topics to write to: tenant1-warn for warning when environment is not ok for tortoise and warning when data is wrong or some error happened and tenant1-output data for outputting processed data (calculated averages).
   
   
 ```
@@ -95,7 +95,7 @@ query_warn_null = df_null \
     .writeStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "kafka:9092") \
-    .option("topic", "warn") \
+    .option("topic", "tenant1-warn") \
     .option("checkpointLocation", "/tmp/kafka-checkpoint-null") \
     .start()
   
@@ -123,7 +123,7 @@ query_warn = df_environment_warn \
     .writeStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "kafka:9092") \
-    .option("topic", "warn") \
+    .option("topic", "tenant1-warn") \
     .option("checkpointLocation", "/tmp/kafka-checkpoint") \
     .start()
 
@@ -133,7 +133,7 @@ query = outputData \
     .writeStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "kafka:9092") \
-    .option("topic", "data-output") \
+    .option("topic", "tenant1-data-output") \
     .option("checkpointLocation", "/tmp/kafka-checkpoint") \
     .start()
                                                                  
