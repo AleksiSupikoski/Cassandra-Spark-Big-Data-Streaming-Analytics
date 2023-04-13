@@ -82,7 +82,7 @@ df = spark \
 df = df \
 .select(
     from_json(
-        decode(F.col("value"), "utf-8"),
+        decode(col("value"), "utf-8"),
         schema
     ).alias("value")
 )
