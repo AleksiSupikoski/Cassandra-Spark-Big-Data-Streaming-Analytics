@@ -35,3 +35,9 @@ When creating a time window a watermark on the data is used to collect the data 
     .groupBy(window("readable_time", "5 minutes"), "dev_id") \
     ...
 ```
+### 1.4 List performance metrics which would be important for the streaming analytics for your tenant cases. For each metric, explain its definition, how to measure it in your analytics/platform and why it is important for the analytics of the tenant (for whom/component and for which purposes).
+
+Since tenant is paying for the service of mysimbdp, the tenant is interested in receiving metrics such as stream latency (the delay of data sent - data received), and throughput (amount of data processed/time, in our case, number of rows processed per window time, 1 minute in the implementation: please see see tenantsreamapp code) of the data processing service. For development and maintenance tenant is also interested in receiving information if any errors occur: if wrong data for example is sent or data is such that it can't be interpreted by the processing service, then tenanstreamapp should notify tenant's application about that.
+  
+## 1.5 Provide a design of your architecture for the streaming analytics service in which you clarify: tenant data sources, mysimbdp messaging system, mysimbdp streaming computing service, tenant streaming analytics app, mysimbdp-coredms, and other components, if needed. Explain your choices of technologies for implementing your design and reusability of existing assignment works. Note that the result from tenantstreamapp will be sent back to the tenant in near real-time and to be ingested into mysimbdp-coredms
+  
