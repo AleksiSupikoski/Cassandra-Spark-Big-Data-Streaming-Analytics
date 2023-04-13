@@ -80,9 +80,12 @@ df = spark \
 
 # convert the value column to string and decode it as json according to schema
 df = df \
-    .withColumn("value", col("value").cast("string")) \
-    .withColumn("value", from_json("value", schema)) \
-    .select(col("value.*"))
+.select(
+    from_json(
+        decode(F.col("value"), "utf-8"),
+        schema
+    ).alias("value")
+)
 ```
 I then do the necessary processing for the dataframes and add new columns for the extracted data of interest, this data is then converted to json and sent to kafka using pyspark's methods. Since we have multiple types of analytics of interest, we also have two kafka topics to write to: tenant1-warn for warning when environment is not ok for tortoise and warning when data is wrong (an empty json is sent) or some error happened and tenant1-output data for outputting processed data (calculated averages). The data is serialised back using pyspark's methods, just lice deserealization part.
   
