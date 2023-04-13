@@ -1,4 +1,4 @@
-p align="center"><img src="img/gram.png")<p>
+<p align="center"><img src="img/gram.png")<p>
 
 # 1 - Batch data ingestion pipeline 
 
