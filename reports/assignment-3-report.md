@@ -47,4 +47,21 @@ In mysimbdp, tenant's data producer (device) streams data through DAAS and its A
   
 ## 2.1 As a tenant, implement a tenantstreamapp. For code design and implementation, explain (i) the structures/schemas of the input streaming data and the analytics output result in your implementation, the role/importance of such schemas and the reason to enforce them for input data and results, and (ii) the data serialization/deserialization, for the streaming analytics application (tenantstreamapp)
 
-
+I have implemented tenantsreamapp with pyspark. The schema looks like this:
+  
+```
+# define the schema for the incoming data
+schema = StructType([
+    StructField("time", StringType()),
+    StructField("readable_time", TimestampType()),
+    StructField("acceleration", DoubleType()),
+    StructField("acceleration_x", DoubleType()),
+    StructField("acceleration_y", DoubleType()),
+    StructField("acceleration_z", DoubleType()),
+    StructField("battery", IntegerType()),
+    StructField("humidity", IntegerType()),
+    StructField("pressure", DoubleType()),
+    StructField("temperature", DoubleType()),
+    StructField("dev_id", StringType())
+])
+```
