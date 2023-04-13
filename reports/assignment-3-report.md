@@ -151,7 +151,7 @@ The key logic of data processing in code above is that it tests for occurrence o
 
 ### 2.3 Explain a test environment for testing tenantstreamapp, including how you emulate streaming data, configuration of mysimbdp and other relevant parameters. Run tenantstreamapp and show the operation of the tenantstreamapp with your test environments. Discuss the analytics and its performance observations when you increase/vary the speed of streaming data.
 
-In my test environment i deploy required containers, a kafka with zookeeper and their required topics and spark master with one spark working node (with more for thesting parallelism). To emulate streaming data i implemented a simple kafka producer with python that emulates data such as at korkeasaari zoo:
+In my test environment i deploy required containers, a kafka with zookeeper and their required topics and spark master with one spark working node (with more for thesting parallelism). To emulate streaming data i implemented a simple kafka producer with python (producer.py) that emulates data such as at korkeasaari zoo:
 
 ```
 import json
@@ -193,7 +193,17 @@ for i in range(100000):
 ```
 
 Warn topic consumer, where data is sent as alarm when environment is not ok, and wrong data is sent, note emty json { }:
+  
 <p align="center"><img src="img/warn.png")<p>
+  
 Data-output topic consumer, when data is sent at 5-second (as in real data) interval:
+  
 <p align="center"><img src="img/output.png")<p>
-Data-output topic consumer, when data is sent at maximum possible interval:
+  
+Data-output topic consumer, when data is sent at maximum possible interval (no delay in producer.py) the only thing that changes is throughput:
+```
+... "latency":0.059,"throughput":2239.6833333333334}
+... "latency":0.059,"throughput":2206.85}
+... "latency":0.059,"throughput":2201.9166666666665}
+```
+  
