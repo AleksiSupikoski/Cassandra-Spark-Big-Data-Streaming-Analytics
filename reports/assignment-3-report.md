@@ -22,6 +22,16 @@ Regarding the delivery guarantees the data is generated every 5 seconds, and reg
   
 ### 1.3 Given streaming data from the tenant (selected before). Explain the following issues: (i) which types of time should be associated with stream data sources for the analytics and be considered in stream processing (if the data sources have no timestamps associated with events, then what would be your solution), (ii) which types of windows should be developed for the analytics (if no window, then why), (iii) what could cause out-of-order data/records with your selected data in your running example, and (iv) will watermarks be needed or not, explain why. Explain these aspects and give examples.
 
-The dataset provides two times "time" time in tenants own standard and "readable" time in a generally accepted standard. Both of them represent the time, when the data was generated, so we can use it as a timestamp. For performance analytics we can use that timestamp and calculate the latency of message broker and consumer by associating a row with another time stamp upon receival. If the data source didn't have any timestamp we would need to assume latency separately and add it in processing stage: current-time - latency = approximate time of data generated.
+The dataset provides two times "time" time in tenants own standard and "readable" time in a generally accepted standard. Both of them represent the time, when the data was generated, so we can use it as a timestamp. For performance analytics we can use that timestamp and calculate the latency of message broker and consumer by associating a row with another time stamp upon receival. If the data source didn't have any timestamp we would need to assume latency separately and add it in processing stage: current-time - latency = approximate time of data generated, but designer needs to remember tahat delivery guarantee of exatctly once would be more suitable here.
   
-Depending on the knowledge that we want to extract from the data we might want or not to use windowing. For example if we want to extract average temperature or any other metric over a period of time we could use a sliding window of 5 minutes to gather data and calculate averages for the metrics. If we want to stream instantaneous movement data of the tortoise, then there is no use of windowing.
+Depending on the knowledge that we want to extract from the data we might want or not to use windowing. For example if we want to extract average temperature or any other metric over a period of time we could use a sliding window of 5 minutes to gather data and calculate averages for the metrics. If we want to stream instantaneous movement data of the tortoise, then there is no use of windowing. 
+
+Device malfunction or network issues or prblems in mysimbdp could result in data to be sent/received out of order. This will create problems on data processing side, especially if the data didnt have any timestamp, resulting in incomplete data processing. Luckily the data has timestamps, so we can counter these issues on processing stage.
+  
+When creating a time window a watermark on the data is used to collect the data based on data's timestamp, not the system time of the data processor, this is not only smarter since we have a timestamp in the data, but it will also help to counter problems mentioned above. 
+```
+    df \
+    .withWatermark("readable_time", "1 minutes") \
+    .groupBy(window("readable_time", "1 minutes"), "dev_id") \
+    ...
+```
