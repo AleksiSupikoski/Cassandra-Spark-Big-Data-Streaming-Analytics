@@ -224,7 +224,7 @@ Since i am emulating data, by generating random data no other subset is required
 ```
       - SPARK_WORKER_CORES=4
 ```
-For 1 and 3 nodes i have seen an increase in performance of around 200 more events (rows) per second processed, so my assumption that events were dropped was correct:
+For 1 and 3 nodes i have seen an increase in performance of around 200 more events (rows) per second processed, for both tenants so my assumption that events were dropped was correct:
 
 1 worker node with maximum sending speed:
 ```
