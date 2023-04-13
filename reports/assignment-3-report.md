@@ -67,16 +67,18 @@ schema = StructType([
 ```
 The schema defines data types for the columns of stream dataframe that is used to query, aggregate and calculate data from stream. It also makes sure that data that is sent is correct, for example if wrong data is sent the fields of schema with wrong data the row's field will be null, for which i test in dataframes, this helps us with validation of data quality.
 
+  
+The data in stream is in json format, so we need to deserializre it casting it into a string and then using to_json method passing the schema structure.
 ```
 # read binary data from Kafka
 df = spark \
     .readStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "kafka:9092") \
-    .option("subscribe", "data") \
+    .option("subscribe", "tenant1-data") \
     .load()
 
-# convert the value column to string and decode it according to schema
+# convert the value column to string and decode it as json according to schema
 df = df \
     .withColumn("value", col("value").cast("string")) \
     .withColumn("value", from_json("value", schema)) \
