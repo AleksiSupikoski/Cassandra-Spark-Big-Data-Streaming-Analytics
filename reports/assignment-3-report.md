@@ -148,3 +148,46 @@ query_warn_null.awaitTermination()
 ### 2.2 Explain the key logic of functions for processing events/records in tenantstreamapp in your implementation. Explain under which conditions/configurations and how the results are sent back to the tenant in a near real time manner and/or are stored into mysimbdp-coredms as the final sink.
                                                                  
 The key logic of data processing in code above is that it tests for occurrence of null's in case of wrong data being sent, for another dataframe i test if environmental variables are suitable for the tortoise, in the main df, i declare a 1-minute sliding window with watermark and calculate average values for temperature, humidity, acceleration etc. and aggregate them by dev-id. Then the main dataframes data is every minute sent back to tenant's topic consumed by daas, i decided not to implement coredms ingestion, but it is as simple as writing to kafka with pyspark's functionality. When environmental metrics don't comply with supposed healthly environment for tortoise, i send them to another kafka topic which warns the tenant when he consumes it from daas with their application. When data is wrong an empty json is sent there.
+
+### 2.3 Explain a test environment for testing tenantstreamapp, including how you emulate streaming data, configuration of mysimbdp and other relevant parameters. Run tenantstreamapp and show the operation of the tenantstreamapp with your test environments. Discuss the analytics and its performance observations when you increase/vary the speed of streaming data.
+
+In my test environment i deploy required containers, a kafka with zookeeper and their required topics and spark master with one spark working node (with more for thesting parallelism). To emulate streaming data i implemented a simple kafka producer with python that emulates data such as at korkeasaari zoo:
+
+```
+import json
+import time
+import calendar
+import datetime
+import random
+from bson import json_util
+from kafka import KafkaProducer
+
+
+producer = KafkaProducer(bootstrap_servers='localhost:9093')
+
+#time,readable_time,acceleration,acceleration_x,acceleration_y,acceleration_z,battery,humidity,pressure,temperature,dev-id
+#1522826433358,2018-04-04T07:20:33.358000Z,1009.8237469974649,-104,332,948,3007,20,1009.91,35.24,C2:9A:9F:E5:58:27
+
+for i in range(100000):
+    if i == 3: # emulate "wrong data"
+        data = {
+        'wrong_device': 'absolutely wrong data'
+        }
+    else:
+        data = { # <----- sometimes rand's will generate unsuitable environment for the tortoise
+            'time': calendar.timegm(time.gmtime()),
+            'readable_time' : datetime.datetime.now().isoformat(),
+            'acceleration' : round(random.uniform(0,1000),5),
+            'acceleration_x': round(random.uniform(-1000,1000),1),
+            'acceleration_y': round(random.uniform(-1000,1000),1),
+            'acceleration_z': round(random.uniform(-1000,1000),1),
+            'battery': random.randint(0,100),
+            'humidity': random.randint(97,100),
+            'pressure': round(random.uniform(999,1005),2),
+            'temperature': round(random.uniform(15,31),2),
+            'dev_id': 'C2:9A:9F:E5:58:27'
+            }
+    producer.send('data', json.dumps(data, default=json_util.default).encode('utf-8'))
+
+    #time.sleep(5) # turn off for extremely fast data speed.
+```
