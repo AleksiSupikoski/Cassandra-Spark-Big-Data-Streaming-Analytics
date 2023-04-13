@@ -43,4 +43,8 @@ Since tenant is paying for the service of mysimbdp, the tenant is interested in 
   
 In mysimbdp, tenant's data producer (device) streams data through DAAS and its API that sends data to Nifi's Kafka connector. Kafka connector authenticates and sends data to Kafka mysimbdp messaging system in clients according topic. Then the data is consumed by the tenantstreamapp in Apache Spark job that contains the logic for processing and analytics. The processed output data is then fed back through kafka tenants output data topic to the DAAS for the tenant to consume output jsons through it's API from all the output topics including warn topic that warns tenant, whenever errors occur or environment is bad for the tortoise. Apache Spark job also connects to mysimbdp-coredms through pyspark's cassandra connector and ingests the processed data (excluding warn topic) into tenant's keyspace's processed table if required. 
 
-# 2
+# 2 - Implementation of streaming analytics
+  
+## 2.1 As a tenant, implement a tenantstreamapp. For code design and implementation, explain (i) the structures/schemas of the input streaming data and the analytics output result in your implementation, the role/importance of such schemas and the reason to enforce them for input data and results, and (ii) the data serialization/deserialization, for the streaming analytics application (tenantstreamapp)
+
+
