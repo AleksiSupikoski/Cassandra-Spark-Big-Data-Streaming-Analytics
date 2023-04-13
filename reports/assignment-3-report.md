@@ -173,6 +173,11 @@ for i in range(100000):
         data = {
         'wrong_device': 'absolutely wrong data'
         }
+    if i > 30 and i < 50: # emulate "wrong data"
+        data = {
+        'wrong_device': 'wrong data',
+        'readable_time' : datetime.datetime.now().isoformat()
+        }
     else:
         data = { # <----- sometimes rand's will generate unsuitable environment for the tortoise
             'time': calendar.timegm(time.gmtime()),
@@ -209,3 +214,6 @@ Data-output topic consumer, when data is sent at maximum possible interval (no d
   
 We see that throughput increases accordingly.´, this is because more data is processed in one minute window. We see that latency is 0.059 s, which is good and throughput at data second 5-second interval is 0.02 events (data jsons or rows processed) per second, which highly increases with 1 worker node processing 2200+ events per second when we send data as fast as producer can, but it looks like some events are being dropped by worker.
   
+### 2.4 Present your tests and explain them for the situation in which wrong data is sent from or is within the data sources. Explain how you emulate wrong data for your tests. Report how your implementation deals with that (e.g., exceptions, failures, and decreasing performance). You should test with different error rates
+  
+I presented how i generate wrong data in code above. When wrong data occurs, the tenantsreamapp reports about it to its warn topic, that it sends wrong data back so that tenant can see what is missing for example.
