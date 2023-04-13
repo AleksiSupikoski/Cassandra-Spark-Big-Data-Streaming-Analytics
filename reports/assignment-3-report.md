@@ -47,7 +47,7 @@ In mysimbdp, tenant's data producer (device) streams data through DAAS and its A
   
 ## 2.1 As a tenant, implement a tenantstreamapp. For code design and implementation, explain (i) the structures/schemas of the input streaming data and the analytics output result in your implementation, the role/importance of such schemas and the reason to enforce them for input data and results, and (ii) the data serialization/deserialization, for the streaming analytics application (tenantstreamapp)
 
-I have implemented tenantsreamapp with pyspark. The schema looks like this:
+I have implemented tenantsreamapp with pyspark. For the korkeasaari data a schema looks like this:
   
 ```
 # define the schema for the incoming data
@@ -65,3 +65,21 @@ schema = StructType([
     StructField("dev_id", StringType())
 ])
 ```
+The schema defines data types for the columns of stream dataframe that is used to query, aggregate and calculate data from stream. It also makes sure that data that is sent is correct, for example if wrong data is sent the fields of schema with wrong data the row's field will be null, for which i test in dataframes, this helps us with validation of data quality.
+
+```
+# read binary data from Kafka
+df = spark \
+    .readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "kafka:9092") \
+    .option("subscribe", "data") \
+    .load()
+
+# convert the value column to string and decode it according to schema
+df = df \
+    .withColumn("value", col("value").cast("string")) \
+    .withColumn("value", from_json("value", schema)) \
+    .select(col("value.*"))
+```
+
