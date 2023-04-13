@@ -220,7 +220,11 @@ I presented how i generate wrong data in code above. When wrong data occurs, the
 
 ### 2.5 Explain parallelism settings in your implementation (tenantstreamapp) and test with different (higher) degrees of parallelism for at least two instances of tenantstreamapp (e.g., using different subsets of the same dataset). Report the performance and issues you have observed in your testing environments. Is there any siutation in which a high value of the application parallelism degree could cause performance problems, given your limited underlying computing resources
   
-Since i am emulating data, by generating random data no other subset is required, only hawing two producers, and additional topics for the the tenants as well as an additional spark job. I tested with 1 worker node and with 3 worker nodes as with 3 worker nodes it was already hard for my machine to start a job. With unlimited resources i believe that at some point Amdahls law will have ts effect so that adding more nodes to the system will produce only minimal increase in performance. For 1 and 3 nodes i have seen an increase in performance of around 200 more events (rows) processed, so my assumption that events were dropped was correct:
+Since i am emulating data, by generating random data no other subset is required, only hawing two producers, and additional topics for the the tenants as well as an additional spark job. I tested with 1 worker node and with 3 worker nodes as with 3 worker nodes it was already hard for my machine to start a job. With unlimited resources i believe that at some point Amdahls law will have ts effect so that adding more nodes to the system will produce only minimal increase in performance. Each working node had 4 cores:
+```
+      - SPARK_WORKER_CORES=4
+```
+For 1 and 3 nodes i have seen an increase in performance of around 200 more events (rows) per second processed, so my assumption that events were dropped was correct:
 
 1 worker node with maximum sending speed:
 ```
@@ -245,3 +249,4 @@ Since i am emulating data, by generating random data no other subset is required
 ... "latency":0.059,"throughput":2369.55}
 ... ...
 ```
+Looking at the (small) trhoughput increace of events per second looks that already at three nodes my machine had reached the ceiling of a possible performance increase.
