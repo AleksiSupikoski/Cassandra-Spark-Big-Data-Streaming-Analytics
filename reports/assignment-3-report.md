@@ -31,7 +31,7 @@ Device malfunction or network issues or prblems in mysimbdp could result in data
 When creating a time window a watermark on the data is used to collect the data based on data's timestamp, not the system time of the data processor, this is not only smarter since we have a timestamp in the data, but it will also help to counter problems mentioned above. 
 ```
     df \
-    .withWatermark("readable_time", "1 minutes") \
-    .groupBy(window("readable_time", "1 minutes"), "dev_id") \
+    .withWatermark("readable_time", "5 minutes") \
+    .groupBy(window("readable_time", "5 minutes"), "dev_id") \
     ...
 ```
