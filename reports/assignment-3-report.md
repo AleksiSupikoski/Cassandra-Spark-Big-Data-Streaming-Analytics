@@ -216,4 +216,4 @@ We see that throughput increases accordingly.´, this is because more data is pr
   
 ### 2.4 Present your tests and explain them for the situation in which wrong data is sent from or is within the data sources. Explain how you emulate wrong data for your tests. Report how your implementation deals with that (e.g., exceptions, failures, and decreasing performance). You should test with different error rates
   
-I presented how i generate wrong data in code above. When wrong data occurs, the tenantsreamapp reports about it to its warn topic, that it sends wrong data back so that tenant can see what is missing for example.
+I presented how i generate wrong data in code above. When wrong data occurs, the tenantsreamapp reports about it to its warn topic, that it sends wrong data back so that tenant can see what is missing for example. This does not decrease performance, nor cause errors it only produces dataframe with nulls which converts to emty output json or a json with missing data in the end.
