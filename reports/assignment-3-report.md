@@ -192,6 +192,6 @@ for i in range(100000):
     #time.sleep(5) # turn off for extremely fast data speed.
 ```
 
-Warn topic consumer:
+Warn topic consumer, where data is sent as alarm when environment is not ok, and wrong data is sent, note emty json { }:
 <p align="center"><img src="img/warn.png")<p>
 
