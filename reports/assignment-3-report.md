@@ -231,7 +231,7 @@ For 1 and 3 nodes i have seen an increase in performance of around 200 more even
 ... "latency":0.059,"throughput":936.9666666666667}
 ... "latency":0.059,"throughput":2229.6833333333334}
 ... "latency":0.059,"throughput":2206.65}
-... "latency":0.059,"throughput":2201.9166666666665}
+... "latency":0.059,"throughput":2213.9166666666665}
 ... ...
 ```
 
