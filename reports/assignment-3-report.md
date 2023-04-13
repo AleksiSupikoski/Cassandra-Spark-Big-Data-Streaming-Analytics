@@ -39,13 +39,13 @@ When creating a time window a watermark on the data is used to collect the data 
 
 Since tenant is paying for the service of mysimbdp, the tenant is interested in receiving metrics such as stream latency (the delay of data sent - data received), and throughput (amount of data processed/time, in our case, number of rows processed per window time, 1 minute in the implementation: please see see tenantsreamapp code) of the data processing service. For development and maintenance tenant is also interested in receiving information if any errors occur: if wrong data for example is sent or data is such that it can't be interpreted by the processing service, then tenanstreamapp should notify tenant's application about that.
   
-## 1.5 Provide a design of your architecture for the streaming analytics service in which you clarify: tenant data sources, mysimbdp messaging system, mysimbdp streaming computing service, tenant streaming analytics app, mysimbdp-coredms, and other components, if needed. Explain your choices of technologies for implementing your design and reusability of existing assignment works. Note that the result from tenantstreamapp will be sent back to the tenant in near real-time and to be ingested into mysimbdp-coredms
+### 1.5 Provide a design of your architecture for the streaming analytics service in which you clarify: tenant data sources, mysimbdp messaging system, mysimbdp streaming computing service, tenant streaming analytics app, mysimbdp-coredms, and other components, if needed. Explain your choices of technologies for implementing your design and reusability of existing assignment works. Note that the result from tenantstreamapp will be sent back to the tenant in near real-time and to be ingested into mysimbdp-coredms
   
 In mysimbdp, tenant's data producer (device) streams data through DAAS and its API that sends data to Nifi's Kafka connector. Kafka connector authenticates and sends data to Kafka mysimbdp messaging system in clients according topic. Then the data is consumed by the tenantstreamapp in Apache Spark job that contains the logic for processing and analytics. The processed output data is then fed back through kafka tenants output data topic to the DAAS for the tenant to consume output jsons through it's API from all the output topics including warn topic that warns tenant, whenever errors occur or environment is bad for the tortoise. Apache Spark job also connects to mysimbdp-coredms through pyspark's cassandra connector and ingests the processed data (excluding warn topic) into tenant's keyspace's processed table if required. 
 
 # 2 - Implementation of streaming analytics
   
-## 2.1 As a tenant, implement a tenantstreamapp. For code design and implementation, explain (i) the structures/schemas of the input streaming data and the analytics output result in your implementation, the role/importance of such schemas and the reason to enforce them for input data and results, and (ii) the data serialization/deserialization, for the streaming analytics application (tenantstreamapp)
+### 2.1 As a tenant, implement a tenantstreamapp. For code design and implementation, explain (i) the structures/schemas of the input streaming data and the analytics output result in your implementation, the role/importance of such schemas and the reason to enforce them for input data and results, and (ii) the data serialization/deserialization, for the streaming analytics application (tenantstreamapp)
 
 I have implemented tenantsreamapp with pyspark. For the korkeasaari data a schema looks like this:
   
@@ -145,3 +145,6 @@ query.awaitTermination()
 query_warn.awaitTermination()
 query_warn_null.awaitTermination()
 ```
+### 2.2 Explain the key logic of functions for processing events/records in tenantstreamapp in your implementation. Explain under which conditions/configurations and how the results are sent back to the tenant in a near real time manner and/or are stored into mysimbdp-coredms as the final sink.
+                                                                 
+                                                                 
