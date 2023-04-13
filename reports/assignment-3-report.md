@@ -225,8 +225,8 @@ Since i am emulating data, by generating random data no other subset is required
 1 worker node with maximum sending speed:
 ```
 ... "latency":0.059,"throughput":936.9666666666667}
-... "latency":0.059,"throughput":2239.6833333333334}
-... "latency":0.059,"throughput":2206.85}
+... "latency":0.059,"throughput":2229.6833333333334}
+... "latency":0.059,"throughput":2206.65}
 ... "latency":0.059,"throughput":2201.9166666666665}
 ... ...
 ```
