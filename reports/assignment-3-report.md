@@ -250,3 +250,15 @@ For 1 and 3 nodes i have seen an increase in performance of around 200 more even
 ... ...
 ```
 Looking at the (small) trhoughput increace of events per second looks that already at three nodes my machine had reached the ceiling of a possible performance increase.
+
+# Part 3 - Extension
+
+### 3.1 Assume that you have an external RESTful (micro) service which accepts a batch of data (processed events/records) and performs an ML inference and returns the result. How would you connect such a service into your current platform and suggest the tenant to use it in the streaming analytics? Explain what the tenant must do in order to use such a service.
+
+### 3.2 Given the output of streaming analytics stored in mysimbdp-coredms for a long time. Explain a batch analytics (see also Part 1, question 1) that could be used to analyze such historical data for your scenario. Assume you have to design the analytics with the workflow model, draw the workflow of the batch analytics and explain how would you implement it? 
+
+### 3.3 Assume that the streaming analytics detects a critical condition (e.g., a very high rate of alerts) that should trigger the execution of the above-mentioned batch analytics to analyze historical data. The result of the batch analytics will be shared into a cloud storage and a user within the tenant will receive the information about the result. Explain how you will use workflow technologies to coordinate these interactions and tasks (use a figure to explain your design).
+
+### 3.4 Given your choice of technology for implementing your streaming analytics. Assume that a new schema of the input data has been developed and new input data follows the new schema (schema evolution), how would you make sure that the running tenantstreamapp does not handle a wrong schema? Assume the developer/owner of the tenantstreamapp should be aware of any new schema of the input data before deploying the tenantstreamapp, what could be a possible way that the developer/owner can detect the change of the schemas for the input data.
+
+### 3.5 Is it possible to achieve end-to-end exactly once delivery in your current tenantstreamapp design and implementation? If yes, explain why. If not, what could be conditions and changes to achieve end- to-end exactly once? If it is impossible to have end-to-end exactly once delivery in your view, explain why.
