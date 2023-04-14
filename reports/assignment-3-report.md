@@ -261,59 +261,7 @@ In order to add such microservice we would need to add an additioinal topic to m
 
 For that we can stage a spark job to collect the historical data from coredms, then extract the data for analysis. We would perform cleaning on the data to remove any errors and then transforming the dataframe into a format suitable for analysis, and selecting the relevant fields (assuming 1.1 average acceleration as i suggested to analyze seasonal activity of the tortoises) to use in the analysis. After that we would calculate averages of tortoises average movement and ocurrences of instantaneous high movement per season. This data would be sent to DAAS for the tenant to receive. Then this statistical data can be analyzed to get insights on tortoises seasonal activity or capture seasonal hibernation of tortoises, for that we could visualise seasonal data.
 
-```
-          +------------------+       
-          |   Cassandra      |       
-          |     Cluster      |       
-          +--------+---------+       
-                   |                  
-                   |                  
-                   v                  
-         +-----------------+         
-         | (Spark) Job to  |         
-         |  Collect Data   |         
-         +--------+--------+         
-                  |                  
-                  |                  
-                  v                  
-         +-----------------+         
-         |   (Spark)       |
-         |  Data Cleaning  |         
-         |   and Transform |         
-         +--------+--------+         
-                  |                  
-                  |                  
-                  v                  
-         +-----------------+         
-         |  (Spark)        |
-         |  Relevant Field |         
-         |  Selection and  |         
-         |  Aggregation    |         
-         +--------+--------+         
-                  |                  
-                  |                  
-                  v                  
-         +-----------------+         
-         | Statistical     |         
-         |    Analysis     |
-         |  calculatioins  |
-         |  (Spark)        |
-         +--------+--------+         
-                  |                  
-                  |                  
-                  v                  
-         +-----------------+         
-         | Send Data to    |         
-         |   DAAS          |         
-         +--------+--------+         
-                  |                  
-                  |                  
-                  v                  
-         +-----------------+         
-         |Data (Tenant)    |         
-         |  Visualization  |         
-         +-----------------+         
-```
+<p align="center"><img src="img/flow1.png")<p>
 
 
 ### 3.3 Assume that the streaming analytics detects a critical condition (e.g., a very high rate of alerts) that should trigger the execution of the above-mentioned batch analytics to analyze historical data. The result of the batch analytics will be shared into a cloud storage and a user within the tenant will receive the information about the result. Explain how you will use workflow technologies to coordinate these interactions and tasks (use a figure to explain your design).
