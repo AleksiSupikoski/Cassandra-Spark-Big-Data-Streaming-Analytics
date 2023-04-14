@@ -273,7 +273,7 @@ Say that during winter when tortoises should hibernate be notice unexpectedly hi
 
 ### 3.4 Given your choice of technology for implementing your streaming analytics. Assume that a new schema of the input data has been developed and new input data follows the new schema (schema evolution), how would you make sure that the running tenantstreamapp does not handle a wrong schema? Assume the developer/owner of the tenantstreamapp should be aware of any new schema of the input data before deploying the tenantstreamapp, what could be a possible way that the developer/owner can detect the change of the schemas for the input data.
 
-In similar fashion as we alert to the tenants warn kafka topic, we simply need to test for nulls and to send any remaining columns (if they exist) there to indicate that additional columns were added. This way tenant will be alerted if "wrong" or updated data is sent there.
+In similar fashion as we alert to the tenants warn kafka topic, we simply need to test for nulls and to send any remaining columns (if they exist) there to indicate that additional columns were added. This way tenant will be alerted if "wrong" or updated data is sent there. This will validate the schema and alert the tenant when it fails to validate.
 
 ### 3.5 Is it possible to achieve end-to-end exactly once delivery in your current tenantstreamapp design and implementation? If yes, explain why. If not, what could be conditions and changes to achieve end- to-end exactly once? If it is impossible to have end-to-end exactly once delivery in your view, explain why.
   
