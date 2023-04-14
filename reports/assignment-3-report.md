@@ -255,7 +255,62 @@ Looking at the (small) trhoughput increace of events per second looks that alrea
 
 ### 3.1 Assume that you have an external RESTful (micro) service which accepts a batch of data (processed events/records) and performs an ML inference and returns the result. How would you connect such a service into your current platform and suggest the tenant to use it in the streaming analytics? Explain what the tenant must do in order to use such a service.
 
+In order to add such microservice we would need to add an additioinal topic to messaging system where spark job would send batch data and DAAS which would then communicate the ML microservice through its api and return the extracted ML data of interest back to the DAAS, from which the tenant could retrieve such data for example through their own application under their service profile. The tenant would need to update their service plan to add a new tenant-application to make API calls to DAAS and send for example to the COREDMS in same manner as tenantbatchingest applications in assignment 2.
+
 ### 3.2 Given the output of streaming analytics stored in mysimbdp-coredms for a long time. Explain a batch analytics (see also Part 1, question 1) that could be used to analyze such historical data for your scenario. Assume you have to design the analytics with the workflow model, draw the workflow of the batch analytics and explain how would you implement it? 
+
+For that we can stage a spark job to collect the historical data from coredms, then extract the data for analysis. We would perform cleaning on the data to remove any errors and then transforming the dataframe into a format suitable for analysis, and selecting the relevant fields (assuming 1.1 average acceleration as i suggested to analyze seasonal activity of the tortoises) to use in the analysis. After that we would calculate averages of tortoises average movement and ocurrences of instantaneous high movement per season. This data would be sent to DAAS for the tenant to receive. Then this statistical data can be analyzed to get insights on tortoises seasonal activity or capture seasonal hibernation of tortoises, for that we could visualise seasonal data.
+
+```
+          +------------------+       
+          |   Cassandra      |       
+          |     Cluster      |       
+          +--------+---------+       
+                   |                  
+                   |                  
+                   v                  
+         +-----------------+         
+         |   Spark Job to  |         
+         |  Collect Data   |         
+         +--------+--------+         
+                  |                  
+                  |                  
+                  v                  
+         +-----------------+         
+         |   Data Cleaning |         
+         |   and Transform |         
+         +--------+--------+         
+                  |                  
+                  |                  
+                  v                  
+         +-----------------+         
+         |   Relevant Field|         
+         |  Selection and  |         
+         |  Aggregation    |         
+         +--------+--------+         
+                  |                  
+                  |                  
+                  v                  
+         +-----------------+         
+         | Statistical     |         
+         |    Analysis     |         
+         +--------+--------+         
+                  |                  
+                  |                  
+                  v                  
+         +-----------------+         
+         | Send Data to    |         
+         |   DAAS Tenant   |         
+         +--------+--------+         
+                  |                  
+                  |                  
+                  v                  
+         +-----------------+         
+         |    Data         |         
+         |  Visualization  |         
+         +-----------------+         
+```
+
 
 ### 3.3 Assume that the streaming analytics detects a critical condition (e.g., a very high rate of alerts) that should trigger the execution of the above-mentioned batch analytics to analyze historical data. The result of the batch analytics will be shared into a cloud storage and a user within the tenant will receive the information about the result. Explain how you will use workflow technologies to coordinate these interactions and tasks (use a figure to explain your design).
 
