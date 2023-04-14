@@ -270,21 +270,23 @@ For that we can stage a spark job to collect the historical data from coredms, t
                    |                  
                    v                  
          +-----------------+         
-         |   Spark Job to  |         
+         | (Spark) Job to  |         
          |  Collect Data   |         
          +--------+--------+         
                   |                  
                   |                  
                   v                  
          +-----------------+         
-         |   Data Cleaning |         
+         |   (Spark)       |
+         |  Data Cleaning  |         
          |   and Transform |         
          +--------+--------+         
                   |                  
                   |                  
                   v                  
          +-----------------+         
-         |   Relevant Field|         
+         |  (Spark)        |
+         |  Relevant Field |         
          |  Selection and  |         
          |  Aggregation    |         
          +--------+--------+         
@@ -293,20 +295,22 @@ For that we can stage a spark job to collect the historical data from coredms, t
                   v                  
          +-----------------+         
          | Statistical     |         
-         |    Analysis     |         
+         |    Analysis     |
+         |  calculatioins  |
+         |  (Spark)        |
          +--------+--------+         
                   |                  
                   |                  
                   v                  
          +-----------------+         
          | Send Data to    |         
-         |   DAAS Tenant   |         
+         |   DAAS          |         
          +--------+--------+         
                   |                  
                   |                  
                   v                  
          +-----------------+         
-         |    Data         |         
+         |Data (Tenant)    |         
          |  Visualization  |         
          +-----------------+         
 ```
