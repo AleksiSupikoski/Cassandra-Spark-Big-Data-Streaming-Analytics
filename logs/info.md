@@ -1,1 +1,1 @@
-no logs
+logs
