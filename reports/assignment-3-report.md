@@ -318,6 +318,11 @@ For that we can stage a spark job to collect the historical data from coredms, t
 
 ### 3.3 Assume that the streaming analytics detects a critical condition (e.g., a very high rate of alerts) that should trigger the execution of the above-mentioned batch analytics to analyze historical data. The result of the batch analytics will be shared into a cloud storage and a user within the tenant will receive the information about the result. Explain how you will use workflow technologies to coordinate these interactions and tasks (use a figure to explain your design).
 
+Say that during winter when tortoises should hibernate be notice unexpectedly high movement of tortoises in tesnantstreamapp (assuming the tenant is testing the stream of data for that and sends information about that to tenants warn-topic received by daas). Tenant can connect their workflow management service to it and trigger execution of a spark job gathering historical data by the tortoise's ID to check whether this tortoise was hibernating at that period before. if not, tenant at the zoo can take action.
+
+<p align="center"><img src="img/flow.png")<p>
+
+
 ### 3.4 Given your choice of technology for implementing your streaming analytics. Assume that a new schema of the input data has been developed and new input data follows the new schema (schema evolution), how would you make sure that the running tenantstreamapp does not handle a wrong schema? Assume the developer/owner of the tenantstreamapp should be aware of any new schema of the input data before deploying the tenantstreamapp, what could be a possible way that the developer/owner can detect the change of the schemas for the input data.
 
 ### 3.5 Is it possible to achieve end-to-end exactly once delivery in your current tenantstreamapp design and implementation? If yes, explain why. If not, what could be conditions and changes to achieve end- to-end exactly once? If it is impossible to have end-to-end exactly once delivery in your view, explain why.
